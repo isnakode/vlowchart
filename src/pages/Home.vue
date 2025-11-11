@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { db, type Project } from '@/core/db';
-import { Trash2Icon } from 'lucide-vue-next';
+import { LucideImageOff, LucideShapes, Trash2Icon } from 'lucide-vue-next';
 import { nanoid } from 'nanoid';
 import { computed, onMounted, ref } from 'vue';
 
@@ -33,7 +33,7 @@ let filteredProject = computed(() => {
 		<input
 			type="search"
 			class="input me-auto"
-			placeholder="Cari proyek"
+			placeholder="Search project"
 			v-model="query"
 		/>
 
@@ -41,20 +41,20 @@ let filteredProject = computed(() => {
 			class="btn btn-primary"
 			@click="addProject"
 		>
-			Buat
+			Create
 		</button>
 	</div>
 	<div
 		v-if="projects.length == 0"
 		class="grow flex items-center justify-center"
 	>
-		Kamu belum memiliki proyek
+		You don't have any project yet
 	</div>
 	<div
 		v-else-if="filteredProject.length == 0"
 		class="grow flex items-center justify-center"
 	>
-		Judul "{{ query }}" tidak ditemukan
+		No "{{ query }}" project found
 	</div>
 
 	<div
@@ -68,8 +68,10 @@ let filteredProject = computed(() => {
 		>
 			<router-link
 				:to="`/editor/${p.id}`"
-				class="h-40 bg-gray-400 rounded-t-lg"
-			></router-link>
+				class="h-40 bg-gray-400 rounded-t-lg flex items-center justify-center text-base-100"
+			>
+				<LucideShapes class="size-1/2"/>
+			</router-link>
 			<div class="flex p-3 gap-1 justify-between">
 				<form @submit.prevent="async (e) => {
 					await db.projects.update(p.id, {
