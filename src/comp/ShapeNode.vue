@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import noBgImage from '@/assets/transparent.png';
 import type { ShapeProps } from "@/types/ShapeProps";
 import {
 	clamp,
@@ -10,10 +11,9 @@ import {
 import { NodeResizer } from "@vue-flow/node-resizer";
 import { NodeToolbar } from "@vue-flow/node-toolbar";
 import { LucideSquareRoundCorner, LucideType, TextAlignCenterIcon, TextAlignEndIcon, TextAlignJustifyIcon, TextAlignStartIcon } from "lucide-vue-next";
-import { computed, type CSSProperties } from "vue";
+import { computed, onMounted, onUnmounted, ref, type CSSProperties } from "vue";
 import ShapeHandle from "./ShapeHandle.vue";
 import Shapes from "./Shapes.vue";
-import noBgImage from '@/assets/transparent.png'
 
 const { data, ...p } = defineProps<NodeProps<ShapeProps>>()
 defineEmits(['updateNodeInternals'])
@@ -21,6 +21,11 @@ const conn = useConnection()
 const flow = useVueFlow()
 const gap = 50
 
+const md = window.matchMedia('(min-width: 768px)')
+const isMedium = ref(false)
+const checkMatchMedia = (e: MediaQueryListEvent) => {
+	if (isMedium.value != e.matches) isMedium.value = e.matches
+}
 
 const textAlignData = [
 	{ icon: TextAlignStartIcon, align: "left" },
@@ -125,6 +130,14 @@ let textSize = computed<string>({
 	}
 })
 
+onMounted(() => {
+	isMedium.value = md.matches
+	md.addEventListener('change', checkMatchMedia)
+})
+onUnmounted(() => {
+	md.removeEventListener('change', checkMatchMedia)
+})
+
 </script>
 
 <template>
@@ -132,7 +145,7 @@ let textSize = computed<string>({
 <NodeToolbar
 	class="bg-base-100  rounded-md p-1 shadow-lg border dark:border-zinc-600 border-zinc-300 flex md:flex-row flex-col gap-1 items-center"
 	:offset="30 * flow.viewport.value.zoom"
-	:position="Position.Right"
+	:position="isMedium ? Position.Top : Position.Right"
 	:is-visible="!flow.connectionStartHandle.value && p.selected && flow.getSelectedNodes.value.length == 1"
 >
 	<label
@@ -185,7 +198,7 @@ let textSize = computed<string>({
 			v-model="textSize"
 		/>
 	</div>
-	<div class="flex md:flex-row flex-col gap-1 justify-center">
+	<div class="flex flex-col gap-1 justify-center md:flex-row">
 		<button
 			v-for="d in textAlignData"
 			:key="d.align"
