@@ -158,7 +158,7 @@ const focusNodeInput = () => {
 					<ShapesIcon class="size-5" />
 				</p>
 				<div
-					class="border dark:border-zinc-600 border-zinc-300 bg-base-100 rounded-md gap-1 p-1 shadow-lg group-focus-within:grid hidden grid-cols-[repeat(4,max-content)] absolute md:left-[140%] md:top-1/2 md:-translate-y-1/2 bottom-[140%] left-1/2 -translate-x-1/2"
+					class="border dark:border-zinc-600 border-zinc-300 bg-base-100 rounded-md gap-1 p-1 shadow-lg group-focus-within:grid hidden grid-cols-[repeat(4,max-content)] absolute md:left-[140%] md:top-1/2 md:-translate-y-1/2 md:bottom-auto md:translate-x-0 bottom-[140%] left-1/2 -translate-x-1/2"
 				>
 					<button
 						v-for="{ type, ...size } in templates"

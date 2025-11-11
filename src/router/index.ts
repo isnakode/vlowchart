@@ -1,6 +1,6 @@
-import { db } from '@/core/db'
 import Editor from '@/pages/Editor.vue'
 import Home from '@/pages/Home.vue'
+import NotFound from '@/pages/NotFound.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -18,6 +18,7 @@ const router = createRouter({
       path: '/editor/:id',
       component: Editor,
     },
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound, },
   ],
 })
 
