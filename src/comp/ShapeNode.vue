@@ -13,6 +13,7 @@ import { LucideSquareRoundCorner, LucideType, TextAlignCenterIcon, TextAlignEndI
 import { computed, type CSSProperties } from "vue";
 import ShapeHandle from "./ShapeHandle.vue";
 import Shapes from "./Shapes.vue";
+import noBgImage from '@/assets/transparent.png'
 
 const { data, ...p } = defineProps<NodeProps<ShapeProps>>()
 defineEmits(['updateNodeInternals'])
@@ -138,7 +139,7 @@ let textSize = computed<string>({
 		:for="`toolbar-fill-input-${p.id}`"
 		class="rounded-full size-8 bg-size-[1.5rem]!"
 		:style="{
-			background: data.attr.fillColor ?? `url(/transparent.png)`
+			background: data.attr.fillColor ?? `url(${noBgImage})`
 		}"
 	></label>
 	<input
@@ -151,7 +152,7 @@ let textSize = computed<string>({
 		:for="`toolbar-stroke-input-${p.id}`"
 		class="rounded-full size-8 bg-size-[1.5rem]! p-1"
 		:style="{
-			background: data.attr.strokeColor ?? `url(/transparent.png)`
+			background: data.attr.strokeColor ?? `url(${noBgImage})`
 		}"
 	>
 		<div class="rounded-full size-full bg-base-100"></div>
