@@ -1,0 +1,38 @@
+@import 'tailwindcss';
+@plugin 'daisyui';
+
+.vue-flow__resize-control.handle {
+  @apply size-[5.2px]! bg-white! border-1! border-blue-300! rounded-xs!;
+}
+
+.vue-flow__resize-control.line {
+  @apply border-1! border-blue-300!;
+}
+
+.vue-flow__handle {
+@apply bg-transparent! border-none!
+}
+/* .vue-flow__handle {
+  @apply bg-white! rounded-full border-blue-300! border-1 
+} */
+/* .vue-flow__handle-top {
+  @apply bg-white! rounded-full border-blue-300! border-1 w-4
+}
+.vue-flow__handle-left {
+  @apply bg-white! rounded-full border-blue-300! border-1 h-4
+}
+.vue-flow__handle-right {
+  @apply bg-white! rounded-full border-blue-300! border-1 h-4
+}
+.vue-flow__handle-bottom {
+  @apply bg-white! rounded-full border-blue-300! border-1 w-4
+} */
+
+textarea {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+textarea::-webkit-scrollbar {
+  display: none;
+}
