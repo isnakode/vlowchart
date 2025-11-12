@@ -1,21 +1,25 @@
 interface ShapePropsOptions {
 	type: string;
 	hovered?: boolean;
+	writable?: boolean;
 	attr?: ShapeAttr;
 }
 
 export class ShapeProps {
 	type: string;
 	hovered: boolean;
+	writable?: boolean;
 	attr: ShapeAttr;
 
 	constructor({
 		type,
 		hovered = false,
+		writable = false,
 		attr = new ShapeAttr()
 	}: ShapePropsOptions) {
 		this.type = type;
 		this.hovered = hovered;
+		this.writable = writable;
 		this.attr = attr;
 	}
 }

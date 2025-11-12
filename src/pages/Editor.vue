@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LabeledEdge from '@/comp/LabeledEdge.vue';
 import ShapeNode from '@/comp/ShapeNode.vue';
 import Shapes from '@/comp/Shapes.vue';
 import { db, type Project } from '@/core/db';
@@ -6,7 +7,7 @@ import { scaleToMax, templates } from '@/core/ShapeTemplate';
 import router from '@/router';
 import { ShapeAttr, ShapeProps } from '@/types/ShapeProps';
 import { Background } from '@vue-flow/background';
-import { ConnectionLineType, isNode, Panel, useKeyPress, useVueFlow, VueFlow, type Dimensions, type Node, type NodeTypesObject, type XYPosition } from '@vue-flow/core';
+import { ConnectionLineType, isNode, Panel, useKeyPress, useVueFlow, VueFlow, type Dimensions, type EdgeMouseEvent, type EdgeTypesObject, type Node, type NodeMouseEvent, type NodeTypesObject, type XYPosition } from '@vue-flow/core';
 import { HomeIcon, MaximizeIcon, ShapesIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-vue-next';
 import { nanoid } from 'nanoid';
 import { markRaw, onMounted, ref, watch } from 'vue';
@@ -61,6 +62,9 @@ flow.onNodesChange(saveData)
 
 const nodeTypes: NodeTypesObject = {
 	shape: markRaw(ShapeNode)
+}
+const edgeTypes: EdgeTypesObject = {
+	label: markRaw(LabeledEdge)
 }
 
 const selectAll = () => {
@@ -123,23 +127,42 @@ onMounted(async () => {
 	flow.setEdges(edges)
 });
 
-const focusNodeInput = () => {
-	const el = document.querySelector(`#node-input-${flow.getSelectedNodes.value[0]!.id}`) as HTMLInputElement
+const focusNodeInput = (e: NodeMouseEvent) => {
+	flow.updateNodeData<ShapeProps>(e.node.id, { writable: true })
+	const el = document.querySelector(`#node-input-${e.node.id}`) as HTMLInputElement
 	el.focus()
+	const range = document.createRange();
+	range.selectNodeContents(el);
+	const sel = window.getSelection()!;
+	sel.removeAllRanges();
+	sel.addRange(range);
 }
+
+const focusEdgeInput = (e: EdgeMouseEvent) => {
+	const el = document.querySelector(`#edge-input-${e.edge.id}`) as HTMLInputElement
+	el.focus()
+	const range = document.createRange();
+	range.selectNodeContents(el);
+	const sel = window.getSelection()!;
+	sel.removeAllRanges();
+	sel.addRange(range);
+}
+
 </script>
 
 <template>
 <div class="h-dvh w-dvw">
 	<VueFlow
 		:nodeTypes="nodeTypes"
+		:edgeTypes="edgeTypes"
 		:delete-key-code="['Backspace', 'Delete']"
 		:multi-selection-key-code="['Shift', 'Control']"
 		:connection-line-type="ConnectionLineType.SmoothStep"
-		:default-edge-options="{ type: 'smoothstep' }"
+		:default-edge-options="{ type: 'label' }"
 		:pan-on-drag="[1, 2]"
 		:selection-key-code="true"
 		@node-double-click="focusNodeInput"
+		@edge-double-click="focusEdgeInput"
 		@dragover="onDragOver"
 		@drop="onDrop"
 		:max-zoom="5"

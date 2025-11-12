@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { db, type Project } from '@/core/db';
-import { LucideImageOff, LucideShapes, Trash2Icon } from 'lucide-vue-next';
+import { LucideShapes, Trash2Icon } from 'lucide-vue-next';
 import { nanoid } from 'nanoid';
 import { computed, onMounted, ref } from 'vue';
 
@@ -70,7 +70,7 @@ let filteredProject = computed(() => {
 				:to="`/editor/${p.id}`"
 				class="h-40 bg-gray-400 rounded-t-lg flex items-center justify-center text-base-100"
 			>
-				<LucideShapes class="size-1/2"/>
+				<LucideShapes class="size-1/2" />
 			</router-link>
 			<div class="flex p-3 gap-1 justify-between">
 				<form @submit.prevent="async (e) => {

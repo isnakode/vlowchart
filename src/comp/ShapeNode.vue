@@ -143,10 +143,10 @@ onUnmounted(() => {
 <template>
 <NodeResizer :isVisible="p.selected" />
 <NodeToolbar
-	class="bg-base-100  rounded-md p-1 shadow-lg border dark:border-zinc-600 border-zinc-300 flex md:flex-row flex-col gap-1 items-center"
+	class="bg-base-100  rounded-md p-1 shadow-lg border dark:border-zinc-600 border-zinc-300 flex  md:flex-row flex-col gap-1 items-center"
 	:offset="30 * flow.viewport.value.zoom"
 	:position="isMedium ? Position.Top : Position.Right"
-	:is-visible="!flow.connectionStartHandle.value && p.selected && flow.getSelectedNodes.value.length == 1"
+	:is-visible="!conn.startHandle.value && p.selected && flow.getSelectedNodes.value.length == 1 && !p.resizing && !p.dragging"
 >
 	<label
 		:for="`toolbar-fill-input-${p.id}`"
@@ -223,9 +223,9 @@ onUnmounted(() => {
 
 <div
 	:id="`node-input-${p.id}`"
-	class="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 outline-none"
+	class="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 outline-none w-full"
 	:class="{
-		'nodrag nopan': p.selected
+		'nodrag nopan': data.writable
 	}"
 	contenteditable
 	:style="{
@@ -235,6 +235,7 @@ onUnmounted(() => {
 	} as CSSProperties"
 	@blur="e => {
 		flow.updateNodeData<ShapeProps>(p.id, n => ({
+			writable: false,
 			attr: { ...n.data.attr, text: (e.target as HTMLElement).innerText! }
 		}))
 	}"
